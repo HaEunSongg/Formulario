@@ -34,6 +34,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { ComponentNameComponent } from './component-name/component-name.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    ComponentNameComponent,
 
   ],
   imports: [
