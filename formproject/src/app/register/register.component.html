@@ -1,0 +1,103 @@
+<h4>Formulario</h4>
+
+<br><br>
+
+<mat-form-field appearance="fill">
+  <mat-label>Select a Station</mat-label>
+  <mat-select [(value)]="selected">
+    <mat-option>None</mat-option>
+    <mat-option value="option1">Quito</mat-option>
+    <mat-option value="option2">Loja</mat-option>
+    <mat-option value="option3">Cuenca</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<p>You selected: {{selected}}</p>
+
+<br><br>
+
+<mat-form-field class="Temperatura-Max">
+  <mat-label>Temperatura-Max</mat-label>
+  <input matInput type="text" [(ngModel)]="value">
+  <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+
+<br><br>
+
+<mat-form-field class="Temperatura-Min">
+  <mat-label>Temperatura-Min</mat-label>
+  <input matInput type="text" [(ngModel)]="value">
+  <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+
+<br><br>
+
+<label id="radio-group-label">Select Percipitation</label>
+<mat-radio-group aria-labelledby="radio-group-label" class="radio-group" [(ngModel)]="percipitation">
+  <mat-radio-button class="radio-button" *ngFor="let percipi of percipis" [value]="percipi">
+    {{percipi}}
+  </mat-radio-button>
+</mat-radio-group>
+<div>Percipitation is: {{percipitation}}</div>
+
+<br><br>
+
+<button (click)='toggleShowTable()' class="btn btn-primary">SAVE</button>
+<div class="table-responsive">
+  <table *ngIf='showTable' class="table-bg" mat-table [dataSource]="dataSource" matSort
+  class="table-bg" mat-table [dataSource]="dataSource" matSort>
+    <div>
+      <ng-container matColumnDef="Datos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Datos </th>
+        <td mat-cell *matCellDef="let item ; let i= index">{{ i + 1 }}</td>
+      </ng-container>
+      <ng-container matColumnDef="inputdate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Input Date
+        </th>
+        <td mat-cell *matCellDef="let item ; let i= index">{{inputdate}} </td>
+      </ng-container>
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date
+        </th>
+        <td mat-cell *matCellDef="let item ; let i= index">{{date}} </td>
+      </ng-container>
+      <ng-container matColumnDef="station">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Station
+        </th>
+        <td mat-cell *matCellDef="let item ; let i= index">{{station}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Tempmax">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Temp-Max
+        </th>
+        <td mat-cell *matCellDef="let item ; let i= index">{{Tempmax}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Tempmin">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Temp-Min
+        </th>
+        <td mat-cell *matCellDef="let item ; let i= index">{{Tempmin}} </td>
+      </ng-container>
+      <ng-container matColumnDef="percipitation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> percipitation
+        </th>
+        <td mat-cell *matCellDef="let item ; let i= index">{{percipitation}} </td>
+      </ng-container>
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> User
+        </th>
+        <td mat-cell *matCellDef="let item ; let i= index">{{user}} </td>
+      </ng-container>
+      <ng-container matColumnDef="option">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Option
+        </th>
+        <td mat-cell *matCellDef="let item ; let i= index">{{option}} </td>
+      </ng-container>
+    </div>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row;  columns: displayedColumns;"></tr>
+  </table>
+</div>
