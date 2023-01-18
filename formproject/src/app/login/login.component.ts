@@ -1,12 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthDTO } from "src/app/auth.dto";
+import { HttpClient } from '@angular/common/http';
 
-import {
-  Validators,
-  FormBuilder,
-  FormGroup,
-} from "@angular/forms";
 import { Router } from "@angular/router";
 import { UserService } from "src/app/user/user.service";
 
@@ -14,21 +10,27 @@ import { UserService } from "src/app/user/user.service";
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
+  template: `<div>{{jsonDataResult | json}}`
 })
 
 export class LoginComponent implements OnInit {
   loginUser: AuthDTO;
-
+  jsonDataResult: any;
   loginFormUser!: FormGroup
   showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private route: Router,
-    private userService: UserService
+    private userService: UserService,
+    private http: HttpClient
   ) {
     localStorage.clear();
     this.loginUser = new AuthDTO("", "", "", "");
+    this.http.get('assets/json/data.json').subscribe((res) => {
+      this.jsonDataResult = res;
+      console.log('--- result :: ',  this.jsonDataResult);
+    });
   }
 
   ngOnInit(): void {
