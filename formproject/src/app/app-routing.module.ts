@@ -1,29 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from "../../nouse/login/login.component";
-import { RegisterComponent } from "./register/register.component";
 
-import { AuthComponent } from './auth/auth.component';
-import { AdminComponent } from './admin/admin.component';
+import { HomeComponent } from './home';
+import { AuthGuard } from './_helpers';
+
+const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
+const usersModule = () => import('./users/users.module').then(x => x.UsersModule);
 
 const routes: Routes = [
-  {
-    path: "",
-    component: LoginComponent,
-    pathMatch: "full",
-    title:"Login"
-  },
-  {
-    path: "Login",
-    redirectTo: "register",
-    pathMatch: "full",
-  },
-  { path: 'auth', component: AuthComponent },
-  { path: 'admin', component: AdminComponent }
+    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard] },
+    { path: 'account', loadChildren: accountModule },
+
+    // otherwise redirect to home
+    { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

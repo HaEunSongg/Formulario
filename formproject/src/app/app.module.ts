@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {  HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LoginComponent } from "../../nouse/login/login.component";
-import { RegisterComponent } from "./register/register.component";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+
+// used to create fake backend
+import { fakeBackendProvider } from './_helpers';
+import { AppRoutingModule } from './app-routing.module';
+import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+import { AppComponent } from './app.component';
+import { AlertComponent } from './_components';
+import { HomeComponent } from './home';
 
 /*Material modules */
 import { MatCardModule } from "@angular/material/card";
@@ -40,10 +45,8 @@ import { ComponentNameComponent } from './component-name/component-name.componen
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    ComponentNameComponent,
-
+    AlertComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

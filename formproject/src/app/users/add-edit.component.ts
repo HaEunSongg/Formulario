@@ -5,10 +5,13 @@ import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService } from '@app/_services';
 
-@Component({ templateUrl: 'register.component.html' })
-export class RegisterComponent implements OnInit {
+@Component({ templateUrl: 'add-edit.component.html' })
+export class AddEditComponent implements OnInit {
     form!: FormGroup;
+    id?: string;
+    title!: string;
     loading = false;
+    submitting = false;
     submitted = false;
 
     constructor(
@@ -20,12 +23,29 @@ export class RegisterComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.id = this.route.snapshot.params['id'];
+
+        // form with validation rules
         this.form = this.formBuilder.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             username: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            // password only required in add mode
+            password: ['', [Validators.minLength(6), ...(!this.id ? [Validators.required] : [])]]
         });
+
+        this.title = 'Add User';
+        if (this.id) {
+            // edit mode
+            this.title = 'Edit User';
+            this.loading = true;
+            this.accountService.getById(this.id)
+                .pipe(first())
+                .subscribe(x => {
+                    this.form.patchValue(x);
+                    this.loading = false;
+                });
+        }
     }
 
     // convenience getter for easy access to form fields
@@ -42,18 +62,25 @@ export class RegisterComponent implements OnInit {
             return;
         }
 
-        this.loading = true;
-        this.accountService.register(this.form.value)
+        this.submitting = true;
+        this.saveUser()
             .pipe(first())
             .subscribe({
                 next: () => {
-                    this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-                    this.router.navigate(['../login'], { relativeTo: this.route });
+                    this.alertService.success('User saved', { keepAfterRouteChange: true });
+                    this.router.navigateByUrl('/users');
                 },
                 error: error => {
                     this.alertService.error(error);
-                    this.loading = false;
+                    this.submitting = false;
                 }
-            });
+            })
+    }
+
+    private saveUser() {
+        // create or update user based on id param
+        return this.id
+            ? this.accountService.update(this.id!, this.form.value)
+            : this.accountService.register(this.form.value);
     }
 }
